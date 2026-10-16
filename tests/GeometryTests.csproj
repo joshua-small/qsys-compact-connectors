@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="../ConnectorHooks.cs" Link="ConnectorHooks.cs" />
     <Compile Include="../ConnectorSnapping.cs" Link="ConnectorSnapping.cs" />
+    <Compile Include="../ConnectorCornerSnapping.cs" Link="ConnectorCornerSnapping.cs" />
     <PackageReference Include="Lib.Harmony" Version="2.4.2" />
   </ItemGroup>
 </Project>
