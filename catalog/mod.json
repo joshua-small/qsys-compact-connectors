@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "compact-connectors",
+  "name": "Compact Connectors",
+  "description": "Compact 10-unit Container and Channel Group connectors with centered labels, native pin snapping and open-drawer component body snap targets. Independent of Component Auto Width.",
+  "author": "joshua-small",
+  "thumbnail": "catalog/artwork/avitex.ico",
+  "helpUrl": "https://github.com/joshua-small/qsys-compact-connectors"
+}
