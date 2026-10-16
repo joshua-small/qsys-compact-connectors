@@ -35,15 +35,27 @@ internal static class Program
             var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(directory, "Q-Sys Designer.dll"));
             var connectors = new ConnectorBindings(assembly);
             _ = new ConnectorSnapping(assembly);
+            _ = new ConnectorCornerSnapping(assembly);
             Check(true, "actual snap domain, body height and native point bindings resolve");
             Check(ConnectorHooks.TenUnitCreation(PatchProcessor.GetOriginalInstructions(connectors.ContainerCreate)).Count() > 0, "actual Container helper has exactly one height/pitch constant");
             Check(ConnectorHooks.TenUnitCreation(PatchProcessor.GetOriginalInstructions(connectors.ChannelCreate)).Count() > 0, "actual Channel Group helper has exactly one height/pitch constant");
             Check(ConnectorHooks.CenterConnectorPins(PatchProcessor.GetOriginalInstructions(connectors.ConnectorCreatePins)).Count() > 0, "actual connector has exactly two pin-center constructions");
             Check(ConnectorHooks.CenterConnectorText(PatchProcessor.GetOriginalInstructions(connectors.ConnectorRedraw)).Count() > 0, "actual connector has exactly two text drawing calls");
+            if (args.Contains("--snap-behavior"))
+            {
+                NativeSnapTests.Run(assembly, Check);
+                Console.WriteLine($"{checks} metadata/native solver checks passed; no Designer window or input device used.");
+                return 0;
+            }
             Console.WriteLine($"{checks} actual-host metadata checks passed; no host method invoked or patched.");
             return 0;
         }
         var events = new List<string>();
+        Check(ConnectorCornerSnapping.PreferPins(true, 1, true, 2), "closer pin alignment wins over corner alignment");
+        Check(!ConnectorCornerSnapping.PreferPins(true, 2, true, 1), "closer corner alignment remains reachable");
+        Check(ConnectorCornerSnapping.PreferPins(true, -1, true, 1), "equal corrections prefer exact pin-to-pin pairing");
+        Check(ConnectorCornerSnapping.PreferPins(true, 5, false, 0), "missing corner target cannot override a pin target");
+        Check(!ConnectorCornerSnapping.PreferPins(false, 0, true, 5), "missing pin target cannot suppress a corner target");
         ConnectorHooks.Report = (kind, _) => events.Add(kind);
         var ch = ConnectorHooks.Install(new ConnectorBindings(Assembly.GetExecutingAssembly()));
         Check(ch.GetPatchedMethods().Count() == 5, "connector geometry installs under a separate owner");

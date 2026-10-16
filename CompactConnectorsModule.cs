@@ -15,9 +15,10 @@ public sealed class CompactConnectorsModule : ModModule
         var bindings = new ConnectorBindings(host);
         // Resolve/preflight snapping before any geometry patches become active.
         var snapping = new ConnectorSnapping(host);
+        var corners = new ConnectorCornerSnapping(host);
         ConnectorHooks.Report = (kind, detail) => Host.Receipt("compact-connectors", kind, detail);
         var harmony = ConnectorHooks.Install(bindings);
-        try { snapping.Install(harmony); }
+        try { snapping.Install(harmony); corners.Install(harmony); }
         catch { harmony.UnpatchAll(ConnectorHooks.PatchId); ConnectorHooks.Host = null; throw; }
         Host.Receipt("compact-connectors", "installed", new { module = GetType().Assembly.FullName,
             patched = harmony.GetPatchedMethods().Select(m => m.DeclaringType!.FullName + "." + m.Name).ToArray() });
