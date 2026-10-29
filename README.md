@@ -1,5 +1,9 @@
 # Compact Connectors
 
+Portable geometry-rule regressions run with .NET 10 on Windows or Linux without
+Designer dependencies. See [tests/README.md](tests/README.md) for the command and
+the separate Windows/application acceptance requirements.
+
 Independent geometry for 10-unit Container and Channel Group connectors. It centers their pins and label ink at 5 units, preserves existing positions and widths, and uses 10-unit spacing for newly generated connectors. Component Auto Width is optional.
 
 Connector dragging reuses Designer's **Wiring** snap domain, used by Signal Snakes and wire breakpoints. Version 0.1.1 also retains native corner snapping during connector-only object drags: two native snap results are compared per axis, using the smaller correction and preferring pins on ties. Pin-to-pin and corner-to-corner point sets stay separate, so a corner cannot produce a false alignment to a pin. Native tolerance, guide rendering and Ctrl snap bypass remain in use. Mixed selections retain the native domain rule; ordinary wire/Snake snap instances are unchanged.
