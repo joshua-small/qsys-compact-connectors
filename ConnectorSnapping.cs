@@ -76,7 +76,7 @@ internal sealed class ConnectorSnapping
         if (__args[1].ToString() != "Default" || !h.component.IsInstanceOfType(__instance)) return;
         var height = (double)h.bodyHeight.GetValue(__instance)!;
         var drawn = (Size)h.size.GetValue(__instance)!;
-        if (!double.IsFinite(height) || height <= 0 || height >= drawn.Height || !double.IsFinite(drawn.Width)) return;
+        if (!ConnectorSnapRules.HasMainBodyBottom(height, drawn.Height, drawn.Width)) return;
         var origin = (Point)h.position.GetValue(__instance)!;
         var points = (IList)__args[0];
         points.Add(h.point.Invoke([new Point(origin.X, origin.Y + height)]));

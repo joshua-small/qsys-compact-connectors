@@ -76,7 +76,7 @@ internal sealed class ConnectorCornerSnapping
 
     private readonly record struct Axis(bool Found, double Delta, Point Target, Point Moving);
     internal static bool PreferPins(bool pinFound, double pinDelta, bool cornerFound, double cornerDelta) =>
-        pinFound && (!cornerFound || Math.Abs(pinDelta) <= Math.Abs(cornerDelta));
+        ConnectorSnapRules.PreferPins(pinFound, pinDelta, cornerFound, cornerDelta);
 
     private static void Combine(object __instance, Point __0, ref bool __result)
     {
